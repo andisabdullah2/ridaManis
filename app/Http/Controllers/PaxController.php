@@ -1,0 +1,107 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\pax;
+use App\Services\GoogleContactService;
+class PaxController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        if (!session('google_token')) {
+            return redirect()->route('google.login');
+        }
+        $query = pax::query();
+
+        if ($request->filled('tanggal')) {
+            $query->whereDate('tanggal_issued', $request->tanggal);
+        }
+
+        $paxs = $query->get();
+
+        return view('pax.index', compact('paxs'));
+    }
+
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view('pax.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        pax::create($request->only('nama', 'nomor', 'email', 'kode_booking', 'nomor_tiket', 'tanggal_issued', 'flight_number', 'tanggal_berangkat', 'origin','arrival','pax','sub_class','ga_miles','type_of_trip','code_corp','poi'));
+        // Simpan ke Google Contacts
+        $formattedName = $request->tanggal_issued . '-' . $request->nama . '-' . $request->kode_booking;
+        try {
+            $googleService = new GoogleContactService();
+            $googleService->addContact([
+            'nama' => $formattedName,
+            'nomor' => $request->nomor,
+            'email' => $request->email
+        ]);
+        } catch (\Exception $e) {
+        }
+        return redirect()->route('pax.index')->with('success', 'pax berhasil ditambahkan.');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        $pax = pax::findOrFail($id);
+        return view('pax.show', compact('pax'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        $pax = pax::findOrFail($id);
+        return view('pax.edit', compact('pax'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        $pax = pax::findOrFail($id);
+        $pax->update($request->only('nama', 'nomor', 'email', 'kode_booking', 'nomor_tiket', 'tanggal_issued', 'flight_number', 'tanggal_berangkat', 'origin','arrival','pax','sub_class','ga_miles','type_of_trip','code_corp','poi'));
+
+        return redirect()->route('pax.index')->with('success', 'pax berhasil diupdate.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        $pax = pax::findOrFail($id);
+        $pax->delete();
+
+        return redirect()->route('pax.index')->with('success', 'pax berhasil dihapus.');
+    }
+
+    public function updateResponPnr(Request $request, $id)
+    {
+        $pax = Pax::findOrFail($id);
+        $pax->respon_pnr = $request->respon_pnr;
+        $pax->save();
+
+        return back()->with('success', 'Respon PNR berhasil diperbarui.');
+    }
+
+}
