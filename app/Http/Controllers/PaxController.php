@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\pax;
 use App\Services\GoogleContactService;
+use Carbon\Carbon;
+
 class PaxController extends Controller
 {
     /**
@@ -18,10 +20,15 @@ class PaxController extends Controller
         $query = pax::query();
 
         if ($request->filled('tanggal')) {
-            $query->whereDate('tanggal_issued', $request->tanggal);
+            $query->whereDate('tanggal_berangkat', $request->tanggal);
         }
 
-        $paxs = $query->get();
+        $paxs = $query->get()->map(function ($item) {
+            $item->tanggal_issued = Carbon::parse($item->tanggal_issued)->format('d-m-Y');
+            $item->tanggal_berangkat = Carbon::parse($item->tanggal_berangkat)->format('d-m-Y');
+            return $item;
+        });
+
 
         return view('pax.index', compact('paxs'));
     }

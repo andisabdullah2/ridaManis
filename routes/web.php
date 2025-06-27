@@ -1,10 +1,13 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BasicController;
 use App\Http\Controllers\PemilihanController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\PaxController;
+use App\Http\Controllers\PaxExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +39,10 @@ Route::get('/blank', function () {
 Route::get('/google/login', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('/google/callback', [GoogleController::class, 'handleCallback'])->name('google.callback');
 
+Route::get('/pax/export', function (Request $request) {
+    return Excel::download(new PaxExport($request->tanggal), 'data-pax.xlsx');
+})->name('pax.export');
+
 Route::middleware('auth')->group(function() {
     Route::resource('basic', BasicController::class);
     Route::resource('pax', PaxController::class);
@@ -46,5 +53,6 @@ Route::middleware('auth')->group(function() {
 
     Route::put('/basic/{id}/pemilih', [BasicController::class, 'pemilih'])->name('basic.pemilih');
     Route::put('/basic/{id}/kesiswaan', [BasicController::class, 'kesiswaan'])->name('basic.kesiswaan');
+    
 });
 

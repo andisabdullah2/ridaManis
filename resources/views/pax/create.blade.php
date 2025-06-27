@@ -101,13 +101,7 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="ga_miles">GA MILES</label>
-                      <select name="ga_miles" id="ga_miles" class="form-control">
-                        <option value="NO DATA">NO DATA</option>
-                        <option value="BLUE">BLUE</option>
-                        <option value="GOLD">GOLD</option>
-                        <option value="SILVER">SILVER</option>
-                        <option value="PLATINUM">PLATINUM</option>
-                      </select>
+                      <input type="text" class="form-control @error('ga_miles') is-invalid @enderror" name="ga_miles" id="ga_miles" value="NO DATA">
                     </div>
                   </div>
 
@@ -133,7 +127,7 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="poi">POI</label>
-                      <input type="text" class="form-control @error('poi') is-invalid @enderror" name="poi" id="poi" value="{{ old('poi') }}">
+                      <input type="text" class="form-control @error('poi') is-invalid @enderror" name="poi" id="poi" value="Traveloka.com">
                       @error('poi')
                         <span class="text-danger">{{ $message }}</span>
                       @enderror

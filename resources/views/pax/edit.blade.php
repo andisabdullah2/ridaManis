@@ -40,7 +40,9 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="tanggal_issued">ISSUED</label>
-                            <input type="date" class="form-control @error('tanggal_issued') is-invalid @enderror" name="tanggal_issued" id="tanggal_issued" value="{{ old('tanggal_issued', $pax->tanggal_issued) }}">
+                                <input type="date" class="form-control @error('tanggal_issued') is-invalid @enderror"
+                                    name="tanggal_issued" id="tanggal_issued"
+                                    value="{{ old('tanggal_issued', \Carbon\Carbon::parse($pax->tanggal_issued)->format('Y-m-d')) }}">
                             @error('tanggal_issued') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
@@ -48,7 +50,9 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="tanggal_berangkat">BERANGKAT</label>
-                            <input type="date" class="form-control @error('tanggal_berangkat') is-invalid @enderror" name="tanggal_berangkat" id="tanggal_berangkat" value="{{ old('tanggal_berangkat', $pax->tanggal_berangkat) }}">
+                                <input type="date" class="form-control @error('tanggal_berangkat') is-invalid @enderror"
+                                    name="tanggal_berangkat" id="tanggal_berangkat"
+                                    value="{{ old('tanggal_berangkat', \Carbon\Carbon::parse($pax->tanggal_berangkat)->format('Y-m-d')) }}">
                             @error('tanggal_berangkat') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
@@ -88,11 +92,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="ga_miles">GA MILES</label>
-                            <select name="ga_miles" id="ga_miles" class="form-control">
-                                @foreach(['NO DATA', 'BLUE', 'GOLD', 'SILVER', 'PLATINUM'] as $miles)
-                                    <option value="{{ $miles }}" {{ old('ga_miles', $pax->ga_miles) == $miles ? 'selected' : '' }}>{{ $miles }}</option>
-                                @endforeach
-                            </select>
+                            <input type="text" class="form-control @error('ga_miles') is-invalid @enderror" name="ga_miles" id="ga_miles" value="{{ old('ga_miles', $pax->ga_miles) }}">
                         </div>
                     </div>
 

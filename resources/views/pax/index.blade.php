@@ -10,9 +10,11 @@
     <form action="{{ route('pax.index') }}" method="GET" class="form-inline mb-3">
         <label for="tanggal" class="mr-2">Filter Tanggal Issued:</label>
         <input type="date" name="tanggal" id="tanggal" class="form-control mr-2" value="{{ request('tanggal') }}">
-        <button type="submit" class="btn btn-secondary">Filter</button>
-        <a href="{{ route('pax.index') }}" class="btn btn-light ml-2">Reset</a>
+        <button type="submit" class="btn btn-secondary mr-2">Filter</button>
+        <a href="{{ route('pax.index') }}" class="btn btn-light mr-2">Reset</a>
+        <a href="{{ route('pax.export', ['tanggal' => request('tanggal')]) }}" class="btn btn-success">Export to Excel</a>
     </form>
+
 
 
     @if (session('message'))
@@ -39,6 +41,7 @@
                 <th>TYPE OF TRIP</th>
                 <th>CODE CORP</th>
                 <th>POI</th>
+                <th>EMAIl</th>
                 <th>RESPON PNR</th>
                 <th>#</th>
             </tr>
@@ -63,14 +66,15 @@
                     <td>{{ $pax->type_of_trip }}</td>
                     <td>{{ $pax->code_corp }}</td>
                     <td>{{ $pax->poi }}</td>
+                    <td>{{ $pax->email }}</td>
                     <td>
                         <form action="{{ route('pax.update_respon_pnr', $pax->id) }}" method="POST">
                             @csrf
                             @method('PATCH')
                             <select name="respon_pnr" onchange="this.form.submit()" class="form-control form-control-sm">
-                                <option value="PENDING" {{ $pax->respon_pnr == 'PENDING' ? 'selected' : '' }}>PENDING</option>
-                                <option value="CONFIRM" {{ $pax->respon_pnr == 'CONFIRM' ? 'selected' : '' }}>CONFIRM</option>
-                                <option value="NOTED" {{ $pax->respon_pnr == 'NOTED' ? 'selected' : '' }}>NOTED</option>
+                                <option value="CONFORM" {{ $pax->respon_pnr == 'CONFORM' ? 'selected' : '' }}>CONFORM</option>
+                                <option value="CHECKIN" {{ $pax->respon_pnr == 'CHECKIN' ? 'selected' : '' }}>CHECKIN</option>
+                                <option value="ENABLE" {{ $pax->respon_pnr == 'ENABLE' ? 'selected' : '' }}>ENABLE</option>
                             </select>
                         </form>
                     </td>
