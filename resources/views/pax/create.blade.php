@@ -127,7 +127,7 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="poi">POI</label>
-                      <input type="text" class="form-control @error('poi') is-invalid @enderror" name="poi" id="poi" value="Traveloka.com">
+                      <input type="text" class="form-control @error('poi') is-invalid @enderror" name="poi" id="poi" value="TRAVELOKADOTCOM">
                       @error('poi')
                         <span class="text-danger">{{ $message }}</span>
                       @enderror
