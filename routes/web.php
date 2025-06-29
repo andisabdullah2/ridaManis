@@ -43,6 +43,7 @@ Route::get('/pax/export', function (Request $request) {
     return Excel::download(new PaxExport($request->tanggal), 'data-pax.xlsx');
 })->name('pax.export');
 
+
 Route::middleware('auth')->group(function() {
     Route::resource('basic', BasicController::class);
     Route::resource('pax', PaxController::class);
