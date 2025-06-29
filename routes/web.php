@@ -39,12 +39,12 @@ Route::get('/blank', function () {
 Route::get('/google/login', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('/google/callback', [GoogleController::class, 'handleCallback'])->name('google.callback');
 
-Route::get('/pax/export', function (Request $request) {
-    return Excel::download(new PaxExport($request->tanggal), 'data-pax.xlsx');
-})->name('pax.export_excel');
-
 
 Route::middleware('auth')->group(function() {
+    Route::get('/pax/export', function (Request $request) {
+        return Excel::download(new PaxExport($request->tanggal), 'data-pax.xlsx');
+    })->name('pax.export_excel');
+
     Route::resource('basic', BasicController::class);
     Route::resource('pax', PaxController::class);
     Route::patch('/pax/update-respon-pnr/{id}', [PaxController::class, 'updateResponPnr'])->name('pax.update_respon_pnr');
