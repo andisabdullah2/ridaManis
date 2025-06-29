@@ -41,7 +41,7 @@ Route::get('/google/callback', [GoogleController::class, 'handleCallback'])->nam
 
 Route::get('/pax/export', function (Request $request) {
     return Excel::download(new PaxExport($request->tanggal), 'data-pax.xlsx');
-})->name('pax.export');
+})->name('pax.export_excel');
 
 
 Route::middleware('auth')->group(function() {
