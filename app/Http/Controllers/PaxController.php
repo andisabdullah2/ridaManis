@@ -49,7 +49,7 @@ class PaxController extends Controller
     {
         pax::create($request->only('nama', 'nomor', 'email', 'kode_booking', 'nomor_tiket', 'tanggal_issued', 'flight_number', 'tanggal_berangkat', 'origin','arrival','pax','sub_class','ga_miles','type_of_trip','code_corp','poi'));
         // Simpan ke Google Contacts
-        $formattedName = $request->tanggal_issued . '-' . $request->nama . '-' . $request->kode_booking;
+        $formattedName = $request->tanggal_berangkat . '-' . $request->nama . '-' . $request->kode_booking;
         try {
             $googleService = new GoogleContactService();
             $googleService->addContact([
