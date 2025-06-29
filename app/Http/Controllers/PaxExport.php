@@ -37,7 +37,7 @@ class PaxExport implements FromCollection, WithHeadings, WithMapping, WithEvents
         return [
             'Kode Booking', 'Tanggal Issued', 'Tanggal Berangkat', 'Origin',
             'Arrival', 'PAX', 'Sub Class', 'GA Miles', 'Type of Trip',
-            'Code Corp', 'POI', 'Email', 'Respon PNR'
+            'Code Corp', 'POI', 'Email', 'Respon PNR', 'Nomor Hp'
         ];
     }
 
@@ -57,6 +57,7 @@ class PaxExport implements FromCollection, WithHeadings, WithMapping, WithEvents
             $pax->poi,
             $pax->email,
             $pax->respon_pnr,
+            $pax->nomor,
         ];
     }
 

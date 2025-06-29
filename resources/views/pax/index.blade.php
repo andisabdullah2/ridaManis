@@ -10,10 +10,14 @@
     <form action="{{ route('pax.index') }}" method="GET" class="form-inline mb-3">
         <label for="tanggal" class="mr-2">Filter Tanggal Issued:</label>
         <input type="date" name="tanggal" id="tanggal" class="form-control mr-2" value="{{ request('tanggal') }}">
+
+        <input type="text" name="q" class="form-control mr-2" placeholder="Cari Booking/Origin" value="{{ request('q') }}">
+
         <button type="submit" class="btn btn-secondary mr-2">Filter</button>
         <a href="{{ route('pax.index') }}" class="btn btn-light mr-2">Reset</a>
         <a href="{{ route('pax.export_excel', ['tanggal' => request('tanggal')]) }}" class="btn btn-success">Export to Excel</a>
     </form>
+
 
 
 

@@ -78,12 +78,12 @@
                         <span>{{ __('PFC') }}</span>
                     </a>
                 </li>
-                <li class="nav-item {{ Nav::isRoute('pax.index') }}">
+                <!-- <li class="nav-item {{ Nav::isRoute('pax.index') }}">
                     <a class="nav-link" href="{{ route('pax.index') }}">
                         <i class="fas fa-fw fa-plus"></i>
                         <span>{{ __('Monitoring PFC') }}</span>
                     </a>
-                </li>
+                </li> -->
                 <!-- <li class="nav-item {{ Nav::isRoute('hasilpemilihan.index') }}">
                     <a class="nav-link" href="{{ route('hasilpemilihan.index') }}">
                         <i class="fas fa-fw fa-plus"></i>

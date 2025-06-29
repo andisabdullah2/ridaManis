@@ -22,8 +22,18 @@ class PaxController extends Controller
         if ($request->filled('tanggal')) {
             $query->whereDate('tanggal_berangkat', $request->tanggal);
         }
+        if ($request->filled('q')) {
+            $search = $request->q;
+            $query->where(function ($q) use ($search) {
+                $q->where('kode_booking', 'like', "%{$search}%")
+                ->orWhere('origin', 'like', "%{$search}%")
+                ->orWhere('arrival', 'like', "%{$search}%")
+                ->orWhere('nomor', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
 
-        $paxs = $query->get()->map(function ($item) {
+        $paxs = $query->orderBy('id', 'desc')->get()->map(function ($item) {
             $item->tanggal_issued = Carbon::parse($item->tanggal_issued)->format('d-m-Y');
             $item->tanggal_berangkat = Carbon::parse($item->tanggal_berangkat)->format('d-m-Y');
             return $item;
