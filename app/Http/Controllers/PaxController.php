@@ -29,6 +29,8 @@ class PaxController extends Controller
                 ->orWhere('origin', 'like', "%{$search}%")
                 ->orWhere('arrival', 'like', "%{$search}%")
                 ->orWhere('nomor', 'like', "%{$search}%")
+                ->orWhere('ga_miles', 'like', "%{$search}%")
+                ->orWhere('respon_pnr', 'like', "%{$search}%")
                 ->orWhere('email', 'like', "%{$search}%");
             });
         }
