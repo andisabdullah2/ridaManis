@@ -78,7 +78,7 @@
                             <select name="respon_pnr" onchange="this.form.submit()" class="form-control form-control-sm">
                                 <option value="CONFORM" {{ $pax->respon_pnr == 'CONFORM' ? 'selected' : '' }}>CONFORM</option>
                                 <option value="CHECKIN" {{ $pax->respon_pnr == 'CHECKIN' ? 'selected' : '' }}>CHECKIN</option>
-                                <option value="UNABLE" {{ $pax->respon_pnr == 'ENABLE' ? 'selected' : '' }}>UNABLE</option>
+                                <option value="UNABLE" {{ $pax->respon_pnr == 'UNABLE' ? 'selected' : '' }}>UNABLE</option>
                             </select>
                         </form>
                     </td>
