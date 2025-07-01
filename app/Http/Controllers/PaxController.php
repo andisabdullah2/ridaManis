@@ -17,11 +17,15 @@ class PaxController extends Controller
         if (!session('google_token')) {
             return redirect()->route('google.login');
         }
-        $query = pax::query();
 
+        $query = Pax::query();
+
+        // Filter tanggal berangkat
         if ($request->filled('tanggal')) {
             $query->whereDate('tanggal_berangkat', $request->tanggal);
         }
+
+        // Pencarian umum
         if ($request->filled('q')) {
             $search = $request->q;
             $query->where(function ($q) use ($search) {
@@ -29,18 +33,24 @@ class PaxController extends Controller
                 ->orWhere('origin', 'like', "%{$search}%")
                 ->orWhere('arrival', 'like', "%{$search}%")
                 ->orWhere('nomor', 'like', "%{$search}%")
-                ->orWhere('ga_miles', 'like', "%{$search}%")
                 ->orWhere('respon_pnr', 'like', "%{$search}%")
                 ->orWhere('email', 'like', "%{$search}%");
             });
         }
+        
+        // $gamilesAktivate = $request->filled('miles');
+        if ($request->filled('miles') && $request->miles === 'GA') {
+            $query->where('ga_miles', '!=', 'NO DATA');
+        }
 
-        $paxs = $query->orderBy('id', 'desc')->get()->map(function ($item) {
-            $item->tanggal_issued = Carbon::parse($item->tanggal_issued)->format('d-m-Y');
-            $item->tanggal_berangkat = Carbon::parse($item->tanggal_berangkat)->format('d-m-Y');
-            return $item;
-        });
-
+        // Pagination dan formatting tanggal
+        $paxs = $query->orderBy('id', 'desc')
+            ->paginate(10)
+            ->through(function ($item) {
+                $item->tanggal_issued = Carbon::parse($item->tanggal_issued)->format('d-m-Y');
+                $item->tanggal_berangkat = Carbon::parse($item->tanggal_berangkat)->format('d-m-Y');
+                return $item;
+            });
 
         return view('pax.index', compact('paxs'));
     }
@@ -59,7 +69,10 @@ class PaxController extends Controller
      */
     public function store(Request $request)
     {
-        pax::create($request->only('nama', 'nomor', 'email', 'kode_booking', 'nomor_tiket', 'tanggal_issued', 'flight_number', 'tanggal_berangkat', 'origin','arrival','pax','sub_class','ga_miles','type_of_trip','code_corp','poi'));
+        
+        $data = $request->only('nama', 'nomor', 'email', 'kode_booking', 'nomor_tiket', 'tanggal_issued', 'flight_number', 'tanggal_berangkat', 'origin', 'arrival', 'pax', 'sub_class', 'ga_miles', 'type_of_trip', 'code_corp', 'poi');
+        $data['respon_pnr'] = 'UNABLE';
+        pax::create($data);
         // Simpan ke Google Contacts
         $formattedName = $request->tanggal_berangkat . '-' . $request->nama . '-' . $request->kode_booking;
         try {

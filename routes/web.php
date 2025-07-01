@@ -42,7 +42,7 @@ Route::get('/google/callback', [GoogleController::class, 'handleCallback'])->nam
 
 Route::middleware('auth')->group(function() {
     Route::get('/pax/export', function (Request $request) {
-        return Excel::download(new PaxExport($request->tanggal), 'data-pax.xlsx');
+        return Excel::download(new PaxExport($request->tanggal, $request->q, $request->miles), 'data-pax.xlsx');
     })->name('pax.export_excel');
 
     Route::resource('basic', BasicController::class);

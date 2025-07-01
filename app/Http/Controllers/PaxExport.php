@@ -13,20 +13,45 @@ use Carbon\Carbon;
 class PaxExport implements FromCollection, WithHeadings, WithMapping, WithEvents
 {
     protected $tanggal;
-    protected $responCounts = [];
+    protected $q;
+    protected $miles;
+    public $responCounts ;
 
-    public function __construct($tanggal = null)
+    public function __construct($tanggal = null, $q = null, $miles = null)
     {
         $this->tanggal = $tanggal;
+        $this->q = $q;
+        $this->miles = $miles;
     }
 
     public function collection()
     {
-        $data = Pax::when($this->tanggal, function ($query) {
-            $query->whereDate('tanggal_berangkat', $this->tanggal);
-        })->get();
+        $query = Pax::query();
 
-        // Simpan jumlah berdasarkan respon_pnr
+        // Filter berdasarkan tanggal
+        if ($this->tanggal) {
+            $query->whereDate('tanggal_berangkat', $this->tanggal);
+        }
+
+        // Filter berdasarkan keyword pencarian
+        if ($this->q) {
+            $search = $this->q;
+            $query->where(function ($q) use ($search) {
+                $q->where('kode_booking', 'like', "%{$search}%")
+                ->orWhere('origin', 'like', "%{$search}%")
+                ->orWhere('arrival', 'like', "%{$search}%")
+                ->orWhere('nomor', 'like', "%{$search}%")
+                ->orWhere('ga_miles', 'like', "%{$search}%")
+                ->orWhere('respon_pnr', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+        if ($this->miles === 'GA') {
+            $query->where('ga_miles', '!=', 'NO DATA');
+        }
+        $data = $query->get();
+
+        // Hitung jumlah per respon_pnr
         $this->responCounts = $data->groupBy('respon_pnr')->map->count()->toArray();
 
         return $data;
