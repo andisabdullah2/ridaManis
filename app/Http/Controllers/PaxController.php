@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\pax;
+use App\Pax;
 use App\Services\GoogleContactService;
 use Carbon\Carbon;
 
