@@ -155,7 +155,7 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="nomor_tiket">Nomor Tiket Pax</label>
-                      <input type="text" class="form-control @error('nomor_tiket') is-invalid @enderror" name="nomor_tiket" id="nomor_tiket" value="{{ old('nomor_tiket') }}">
+                      <input type="text" class="form-control @error('nomor_tiket') is-invalid @enderror" name="nomor_tiket" id="nomor_tiket" value="126-">
                       @error('nomor_tiket')
                         <span class="text-danger">{{ $message }}</span>
                       @enderror

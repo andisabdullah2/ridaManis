@@ -9,7 +9,7 @@
 
     <form action="{{ route('pax.index') }}" method="GET" class="form-inline mb-3">
         <label for="tanggal" class="mr-2">Filter Tanggal Issued:</label>
-        <input type="date" name="tanggal" id="tanggal" class="form-control mr-2" value="{{ request('tanggal') }}">
+        <input type="date" format="d-m-Y" name="tanggal" id="tanggal" class="form-control mr-2" value="{{ request('tanggal') }}">
 
         <input type="text" name="q" class="form-control mr-2" placeholder="Cari Booking/Origin" value="{{ request('q') }}">
         <input type="text" name="miles" class="form-control mr-2" placeholder="MILES" value="{{ request('miles') }}">
